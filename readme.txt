@@ -1,0 +1,12 @@
+﻿SWT同样不允许主线程外的其他线程直接访问控件。
+所以SWT为我们提供了async执行Runnable的方法。
+但是该方法只是用于接收异步线程消息，如果你在该方法中做过多的事情同样会造成UI线程的阻塞。
+
+因此，笔者模仿android的异步访问方式，实现SWT下的Handler机制。通过向handler发送消息，handler接受到消息以后响应消息。
+你需要做的就是，在异步线程中执行你的一部操作，当异步线程结束以后需要向handler发送一个消息；同时，你必须复写handler的handleMessage方法。
+当handler接受但消息以后会根据你复写的方法去执行。
+
+由于，不是很了解android下的Handler机制，没有深层次的编写诸如looper，MessageQueue。
+将在下一个版本中加入MessageQueue机制，实现多任务后台处理相应。
+
+具体使用请参考test包下的Handler使用事例。
